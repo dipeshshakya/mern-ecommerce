@@ -1,5 +1,6 @@
 import React from "react";
 import Navbar from "../components/Navbar";
+import Slider from "../components/Slider";
 import TopNavBar from "../components/TopNavBar";
 
 const Home = () => {
@@ -7,6 +8,7 @@ const Home = () => {
     <div>
       <TopNavBar />
       <Navbar />
+      <Slider />
     </div>
   );
 };

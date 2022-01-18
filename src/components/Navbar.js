@@ -4,9 +4,15 @@ import styled from "styled-components";
 import { Badge } from "@material-ui/core";
 const Container = styled.div`
   height: 60px;
+  position: relative;
+  &::after {
+    content: "";
+    clear: both;
+  }
+  padding: 0 0px 20px 0;
 `;
 const Wrapper = styled.div`
-  padding: 10px 20px;
+  //   padding: 10px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
