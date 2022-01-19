@@ -1,114 +1,115 @@
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@material-ui/icons";
-import React from "react";
+import { useState } from "react";
 import styled from "styled-components";
+import { sliderItems } from "../data";
+// import { mobile } from "../responsive";
 
 const Container = styled.div`
   width: 100%;
-  height: 560px;
+  height: 100vh;
   display: flex;
   position: relative;
   overflow: hidden;
-  &::before {
-    content: "";
-    clear: both;
-  }
 `;
+
 const Arrow = styled.div`
   width: 50px;
   height: 50px;
-  background: #fff7f7;
+  background-color: #fff7f7;
   border-radius: 50%;
-  align-items: center;
   display: flex;
+  align-items: center;
   justify-content: center;
   position: absolute;
   top: 0;
   bottom: 0;
+  left: ${(props) => props.direction === "left" && "10px"};
+  right: ${(props) => props.direction === "right" && "10px"};
   margin: auto;
-  left: ${(props) => props.direction === "left" && "20px"};
-  right: ${(props) => props.direction === "right" && "20px"};
   cursor: pointer;
   opacity: 0.5;
   z-index: 2;
 `;
+
 const Wrapper = styled.div`
   height: 100%;
   display: flex;
-  transform: translateX(-100vw);
+  transition: all 1.5s ease;
+  transform: translateX(${(props) => props.slideIndex * -100}vw);
 `;
+
 const Slide = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
+  align-items: center;
+  background-color: #${(props) => props.bg};
 `;
-const ImageContainer = styled.div`
+
+const ImgContainer = styled.div`
   height: 100%;
-  width: 100%;
+  flex: 1;
 `;
+
 const Image = styled.img`
-  width: 100%;
-  object-fit: cover;
   height: 80%;
 `;
+
 const InfoContainer = styled.div`
+  flex: 1;
   padding: 50px;
-  position: relative;
-  z-index: 6;
 `;
+
 const Title = styled.h1`
   font-size: 70px;
-  font-weight: 600;
 `;
+
 const Desc = styled.p`
+  margin: 50px 0px;
   font-size: 20px;
-  margin: 50px 0;
   font-weight: 500;
+  letter-spacing: 3px;
 `;
+
 const Button = styled.button`
   padding: 10px;
   font-size: 20px;
-  background: transparent;
+  background-color: transparent;
   cursor: pointer;
 `;
+
 const Slider = () => {
-    const [slideIndex,setSlideIndex]
-  const handleClick = (direction) => {};
+  const [slideIndex, setSlideIndex] = useState(0);
+  const handleClick = (direction) => {
+    if (direction === "left") {
+      setSlideIndex(slideIndex > 0 ? slideIndex - 1 : 2);
+    } else {
+      setSlideIndex(slideIndex < 2 ? slideIndex + 1 : 0);
+    }
+  };
+
   return (
     <Container>
       <Arrow direction="left" onClick={() => handleClick("left")}>
         <ArrowLeftOutlined />
       </Arrow>
+      <Wrapper slideIndex={slideIndex}>
+        {sliderItems.map((item) => (
+          <Slide bg={item.bg} key={item.id}>
+            <ImgContainer>
+              <Image src={item.img} />
+            </ImgContainer>
+            <InfoContainer>
+              <Title>{item.title}</Title>
+              <Desc>{item.desc}</Desc>
+              <Button>SHOW NOW</Button>
+            </InfoContainer>
+          </Slide>
+        ))}
+      </Wrapper>
       <Arrow direction="right" onClick={() => handleClick("right")}>
         <ArrowRightOutlined />
       </Arrow>
-      <Wrapper>
-        <Slide bg="fefefe">
-          <ImageContainer>
-            <Image src="https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"></Image>
-          </ImageContainer>
-          <InfoContainer>
-            <Title>Summer Sale</Title>
-            <Desc>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Error,
-              itaque!
-            </Desc>
-            <Button>Shop Now</Button>
-          </InfoContainer>
-        </Slide>
-        <Slide bg="fefefd">
-          <ImageContainer>
-            <Image src="https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"></Image>
-          </ImageContainer>
-          <InfoContainer>
-            <Title>Summer Sale</Title>
-            <Desc>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Error,
-              itaque!
-            </Desc>
-            <Button>Shop Now</Button>
-          </InfoContainer>
-        </Slide>
-      </Wrapper>
     </Container>
   );
 };
